@@ -51,8 +51,8 @@ docker-compose --version
 ### Clone the Repository
 
 ```bash
-git clone <your-repository-url>
-cd student-management-system
+git clone https://github.com/ADS77/StudentMS
+cd StudentMS
 ```
 ## 🗄️ Database Setup
 
