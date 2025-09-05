@@ -1,9 +1,6 @@
 package com.example.studentmanagementsystem.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,30 +16,37 @@ import java.io.Serializable;
 public class Student implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer studentId;
+    private Long Id;
+    @Column(name = "first_name", nullable = false)
     private String name;
+    @Column(name = "dept")
     private String dept;
+    @Column(name = "cgpa")
     private Double cgpa;
+    @Column(name = "section")
     private String section;
-    private String rollNo;
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
+    @Column(name = "major")
+    private String major;
 
 
-    public Student (String rollNo, String name, String dept){
-        this.rollNo = rollNo;
+    public Student (String name, String dept, String major){
         this.name = name;
         this.dept = dept;
+        this.major = major;
     }
 
     @Override
     public String toString() {
         return "Student{" +
-                "studentId=" + studentId +
+                "Id=" + Id +
                 ", name='" + name + '\'' +
                 ", dept='" + dept + '\'' +
                 ", cgpa=" + cgpa +
                 ", section='" + section + '\'' +
-                ", rollNo='" + rollNo + '\'' +
+                ", email='" + email + '\'' +
+                ", major='" + major + '\'' +
                 '}';
     }
 }

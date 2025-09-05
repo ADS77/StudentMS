@@ -5,7 +5,10 @@ import com.example.studentmanagementsystem.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
 import java.sql.Struct;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class StudentService {
     private final StudentRepository studentRepository;
@@ -13,30 +16,26 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
+    public Student createStudent(Student student){
+
+        return studentRepository.save(student);
+    }
+
     public List<Student> getAllStudents(){
         return studentRepository.findAll();
     }
 
-    public String register(Student student) {
-        try {
-            studentRepository.save(student);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Registration Failed";
-        }
-        return "Registration Successful";
-    }
 
     public List<Student> getStudentByDept(String dept) {
         return studentRepository.findByDept(dept);
     }
 
     public Student getByEmail(String email) {
-        Student response = null;
+        Optional<Student> response = null;
         if(email != null){
             response = studentRepository.findByEmail(email);
         }
-        return response;
+        return response.isPresent() ? response.get() : null;
     }
 
     public List<Student> searchByKeyWord(String keyWord) {
@@ -49,9 +48,9 @@ public class StudentService {
 
     public String deleteStudent(String id) {
         String success = "";
-        if(id != null && studentRepository.existsById(id)){
+        if(id != null && studentRepository.existsById(Long.valueOf(id))){
             try {
-                studentRepository.deleteById(Integer.valueOf(id));
+                studentRepository.deleteById(Long.valueOf(id));
                 success = "Student deleted successfully!";
             }catch (Exception e){
                 e.printStackTrace();
@@ -59,5 +58,25 @@ public class StudentService {
             }
         }
         return success;
+    }
+
+    public Student updateStudent(Long id, Student updatedStudent) {
+        return studentRepository.findById(id)
+                .map(student -> {
+                    student.setName(updatedStudent.getName());
+                    student.setEmail(updatedStudent.getEmail());
+                    student.setMajor(updatedStudent.getMajor());
+                    student.setCgpa(updatedStudent.getCgpa());
+                    return studentRepository.save(student);
+                })
+                .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
+    }
+
+    public List<Student> getStudentsByMajor(String major) {
+        return studentRepository.findByMajor(major);
+    }
+
+    public List<Student> getTopPerformers(){
+        return studentRepository.findTopPerformers();
     }
 }
