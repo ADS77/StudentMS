@@ -75,20 +75,6 @@ docker ps
 docker exec -it student-db psql -U postgres -d student
 ```
 
-### Alternative: Use H2 Database (In-Memory)
-
-If you prefer to use H2 for testing, update `application.properties`:
-
-```properties
-# H2 Database Configuration
-spring.datasource.url=jdbc:h2:mem:testdb
-spring.datasource.driverClassName=org.h2.Driver
-spring.datasource.username=sa
-spring.datasource.password=password
-spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
-spring.h2.console.enabled=true
-```
-
 ## 🏃‍♂️ Running the Application
 
 ### Method 1: Using Maven
